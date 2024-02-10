@@ -1,0 +1,11 @@
+{% extends "template.html" %}
+{% block conteudo %}
+<h6 class="mt-5">
+    Escolha o arquivo MP4 que deseja transcrever:
+</h6>
+
+<form class="mt-2" method="post" action="{{ url_for('transcrever') }}" enctype="multipart/form-data">
+    <input type="file" name="arquivo" class="form-control" accept=".mp4" required>
+    <button type="submit" class="btn btn-primary mt-3">Transcrever</button>
+</form>
+{% endblock %}

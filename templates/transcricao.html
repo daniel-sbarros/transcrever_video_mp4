@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+{% block conteudo %}
+<a href="/" class="btn btn-primary mt-3">Voltar</a>
+<div class="row mt-2">
+    <div class="col">
+        <h6>
+            TEXTO COM TEMPO:
+        </h6>
+        <p>
+            {% for linha in transcricao['texto_com_tempo']  %}
+                {{ linha }} <br>
+            {% endfor %}
+        </p>
+    </div>
+    <div class="col">
+        <h6>
+            TEXTO PURO:
+        </h6>
+        <p>
+            {% for linha in transcricao['texto_completo']  %}
+                {{ linha }} <br>
+            {% endfor %}
+        </p>
+    </div>
+</div>
+{% endblock %}

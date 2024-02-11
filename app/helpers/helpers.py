@@ -1,5 +1,7 @@
+import os
 from pydub import AudioSegment  # Importar a biblioteca pydub
 import whisper  # Importar a biblioteca openai-whisper
+from run import app
 
 def convert_mp4_to_mp3(file_path: str):
     if file_path.endswith('.mp4'):
@@ -40,3 +42,24 @@ def transcribe_mp3(audio_path, modelo):
     except Exception as err:
         print(f'Erro ao tentar transcrever o audio do arquivo. \n\n{err}')
         return None
+
+def create_txt_file(file_name: str, transcribe: dict):
+    file_path = os.path.join(app.config['TEMP_PATH'], f'{file_name}.txt')
+
+    with open(file_path, 'w') as file:
+        for line in transcribe[file_name]:
+            file.write(f'{line}\n')
+
+def read_txt_file(file_name: str):
+    lines = []
+    file_name = os.path.join(app.config['TEMP_PATH'], f'{file_name}.txt')
+
+    with open(file_name, 'r') as file:
+        for line in file:
+            lines.append(line)
+
+    return lines
+
+def delete_files():
+    for arq in os.listdir(app.config['TEMP_PATH']):
+        os.remove(os.path.join(app.config['TEMP_PATH'], arq))

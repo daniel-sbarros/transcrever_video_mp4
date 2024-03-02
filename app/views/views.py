@@ -24,7 +24,7 @@ def transcrever():
         flash('Nao foi possivel converter o arquivo para MP3.')
         return redirect(url_for('index'))
 
-    transcricao = transcribe_mp3(audio_path, modelo='tiny')
+    transcricao = transcribe_mp3(audio_path, modelo=app.config['MODEL'])
     if not transcricao:
         flash('Não foi possivel transcrever o arquivo.')
         return redirect(url_for('index'))

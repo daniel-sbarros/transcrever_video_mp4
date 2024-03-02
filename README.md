@@ -18,8 +18,12 @@ Obs.: Essa versão de teste está usando o Model <span style="font-weight:bold; 
 1. INSTALE O ffmpeg SEGUINDO O PASSO-A-PASSO ENCONTRADO NESTE LINK: [Tutorial de Instalação ffmpeg](https://www.geeksforgeeks.org/how-to-install-ffmpeg-on-windows/).
 2. CRIE O ARQUIVO ***config.py*** NA RAIZ DO SISTEMA COM O CONTEÚDO ABAIXO:
 ```python
+import os
+
+
 SECRET_KEY = 'sua_key'
 TEMP_PATH = os.path.dirname(os.path.abspath(__file__)) + '/temp'
+MODEL = 'tiny'  # opções de modelos: tiny, base, small, medium, large
 ```
 3. INSTALE AS BIBLIOTECAS A PARTIR DO ARQUIVO ***requeriments.txt*** COM O COMANDO ABAIXO:
 ```sh

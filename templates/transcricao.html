@@ -1,6 +1,9 @@
 {% extends "template.html" %}
 {% block conteudo %}
-<a href="/" class="btn btn-primary mt-3">Voltar</a>
+<div>
+    <a href="/" class="btn btn-primary mt-3">Voltar</a>
+    <a href="{{ url_for('download_file', filename=transcricao['legend_path']) }}" class="btn btn-primary mt-3">Baixar transcrição (.srt)</a>
+</div>
 <div class="row mt-2">
     <div class="col">
         <h6>

@@ -3,6 +3,7 @@ from pydub import AudioSegment  # Importar a biblioteca pydub
 import whisper  # Importar a biblioteca openai-whisper
 from run import app
 
+
 def convert_mp4_to_mp3(file_path: str):
     if file_path.endswith('.mp4'):
         audio = AudioSegment.from_file(file_path, format="mp4")  # Abrir o arquivo mp4 como um segmento de áudio
@@ -13,7 +14,6 @@ def convert_mp4_to_mp3(file_path: str):
         return mp3_path
     else:
         return None
-    
 
 def formata_seg(segundos):
     horas = segundos // 3600
@@ -27,18 +27,25 @@ def transcribe_mp3(audio_path, modelo):
         model = whisper.load_model(modelo)
         result = model.transcribe(audio_path)
         texto_com_tempo = []
+        legend_path = audio_path.replace('.mp3', '.srt')
         
         print('Iniciado transcricão. Aguarde...')
-        for segment in result['segments']:
-            s_time = formata_seg(round(float(segment['start'])))
-            s_text = segment['text']
+        with open(legend_path, 'w', encoding='utf-8') as file_srt:
+            for idx, segment in enumerate(result['segments'], start=1):
+                s_time = formata_seg(round(float(segment['start']))).strip()
+                s_text = segment['text'].strip()
 
-            texto_com_tempo.append(f'[{s_time}]\t{s_text}')
+                row = f'''{idx}
+{s_time},300 --> {formata_seg(round(float(segment["end"])))},000
+{s_text}
+'''
+                texto_com_tempo.append(row.strip())
+                file_srt.write(f'{row.strip()}\n\n')
 
         texto_completo = result['text'].replace('. ', '.\n').replace('? ', '?\n').split('\n')
 
         print('Tarefa executada com sucesso.')
-        return { 'texto_completo': texto_completo, 'texto_com_tempo': texto_com_tempo }
+        return { 'texto_completo':texto_completo, 'texto_com_tempo':texto_com_tempo, 'legend_path':legend_path.replace('\\', '/') }
     except Exception as err:
         print(f'Erro ao tentar transcrever o audio do arquivo. \n\n{err}')
         return None
@@ -62,4 +69,5 @@ def read_txt_file(file_name: str):
 
 def delete_files():
     for arq in os.listdir(app.config['TEMP_PATH']):
-        os.remove(os.path.join(app.config['TEMP_PATH'], arq))
+        os.remove(os.path.join(app.config['TEMP_PATH'], arq)) # if not arq.endswith('.srt') else None
+
